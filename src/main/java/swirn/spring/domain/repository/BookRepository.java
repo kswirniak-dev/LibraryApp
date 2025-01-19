@@ -2,6 +2,8 @@ package swirn.spring.domain.repository;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface BookRepository<Book, Long> extends CrudRepository<Book, Long> {
+import swirn.spring.domain.entity.Book;
+
+public interface BookRepository extends CrudRepository<Book, Long> {
 
 }
