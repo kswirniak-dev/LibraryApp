@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,10 +22,14 @@ public class Borrowing {
 	private Long id;
 	
 	@Column
-	private int bookId;
+	@OneToOne
+	@JoinColumn(name = "book_id")
+	private Book book;
 	
 	@Column
-	private int holderId;
+	@OneToOne
+	@JoinColumn(name = "holder_id")
+	private Holder holder;
 	
 	@Column(columnDefinition = "DATETIME")
 	private LocalDate startDate;
