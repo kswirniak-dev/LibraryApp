@@ -51,7 +51,8 @@ public class BookController {
 	
 	@DeleteMapping("deletebook/{id}")
     public String delete(@PathVariable("id") Long id){
-		bookRepository.deleteById(id);        
+		//TODO: exception handling
+		bookRepository.deleteById(id);
         return "redirect:/index";
 	}
 }
