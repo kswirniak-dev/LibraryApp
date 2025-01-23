@@ -5,8 +5,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import jakarta.validation.Valid;
 import swirn.spring.domain.entity.Book;
@@ -38,6 +40,13 @@ public class BookController {
         return "add-book";
     }
     
+    @GetMapping("/editbook/{id}")
+    public String showEditBookForm(@PathVariable("id") Long id, Model model) {
+    	Book book = bookRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid book id:" + id));
+    	model.addAttribute("book", book);
+    	return "edit-book";
+    }
+    
 	@PostMapping("/addbook")
 	public String addBook(@Valid Book book, BindingResult result, Model model) {
 	    
@@ -49,7 +58,17 @@ public class BookController {
 	    return "redirect:/index";	
 		}
 	
-	@DeleteMapping("deletebook/{id}")
+	@PutMapping("/updatebook/{id}")
+	public String  updateBook(@PathVariable("id") Long id, @Valid Book book, BindingResult result, Model model)  {
+		if (result.hasErrors()) {
+	        return "add-book";
+	    }
+	    book.setId(id);
+	    bookRepository.save(book);
+	    return "redirect:/index";	
+	}
+	
+	@DeleteMapping("/deletebook/{id}")
     public String delete(@PathVariable("id") Long id){
 		//TODO: exception handling
 		bookRepository.deleteById(id);
