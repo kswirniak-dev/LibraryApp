@@ -13,21 +13,25 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Getter @Setter @NoArgsConstructor
+@NoArgsConstructor
 @Table
 public class Book {
 	
     @Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter @Setter
 	private Long id;
 	
 	@Column(nullable = false)
+	@Getter @Setter
 	private String title;
 	
 	@Column
+	@Getter @Setter
 	private String author;
 	
 	@Column(columnDefinition = "YEAR", nullable = false)
+	@Getter @Setter
 	private Year year;
 
 }
