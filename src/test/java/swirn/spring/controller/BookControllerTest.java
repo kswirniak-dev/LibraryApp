@@ -58,13 +58,9 @@ class BookControllerTest {
     	book.setTitle("Nabchodzi burza");
     	book.setAuthor("Thomas, Derek");
         MockitoAnnotations.openMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(bookController).build();
-        
         ReflectionTestUtils.setField(bookController, "bookRepository", bookRepository);
-        
-        System.out.println("Test BookRepository: " + bookRepository.hashCode());
-        System.out.println("Controller BookRepository: " + 
-            ReflectionTestUtils.getField(bookController, "bookRepository"));
+        mockMvc = MockMvcBuilders.standaloneSetup(bookController).build();
+             
     }
 
     @Test
@@ -184,18 +180,6 @@ class BookControllerTest {
     void delete_ShouldDeleteBookAndRedirectToIndex() {
         // Arrange
         Long bookId = 1L;
-        Object controllerBookRepository = ReflectionTestUtils.getField(bookController, "bookRepository");
-        
-        System.out.println("Test BookRepository hashCode: " + bookRepository.hashCode());
-        System.out.println("Controller BookRepository hashCode: " + 
-            controllerBookRepository.hashCode());
-        System.out.println("Test BookRepository identity hashCode: " + 
-            System.identityHashCode(bookRepository));
-        System.out.println("Controller BookRepository identity hashCode: " + 
-            System.identityHashCode(controllerBookRepository));
-        
-        // Jawne zachowanie mocka
-        
         
         // Act
         String viewName = bookController.delete(bookId);
