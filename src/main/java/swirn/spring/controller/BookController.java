@@ -1,5 +1,8 @@
 package swirn.spring.controller;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import swirn.spring.domain.entity.Book;
@@ -34,7 +38,7 @@ public class BookController {
         model.addAttribute("books", bookRepository.findAll());
         return "index";
     }
-	
+    
     @GetMapping("/newbookform")
     public String showSignUpForm(Book book) {
         return "add-book";
@@ -68,10 +72,18 @@ public class BookController {
 	    return "redirect:/index";	
 	}
 	
+	@SuppressWarnings("finally")
 	@DeleteMapping("/deletebook/{id}")
     public String delete(@PathVariable("id") Long id){
-		//TODO: exception handling
-		bookRepository.deleteById(id);
-        return "redirect:/index";
+		try 
+		{
+			bookRepository.deleteById(id);
+		}
+		catch(IllegalArgumentException e) {
+			throw new IllegalArgumentException("Invalid book id:" + id);
+		}
+		finally {
+			return "redirect:/index";
+		}
 	}
 }
