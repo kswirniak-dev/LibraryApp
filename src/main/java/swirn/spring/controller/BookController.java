@@ -30,13 +30,13 @@ public class BookController {
     
     @GetMapping("/")
     public String redirectToMain() {
-    	return "redirect:/index";
+    	return "redirect:/books";
     }
 	
-    @GetMapping("/index")
+    @GetMapping("/books")
     public String showBookList(Model model) {
         model.addAttribute("books", bookRepository.findAll());
-        return "index";
+        return "books";
     }
     
     @GetMapping("/newbookform")
@@ -44,14 +44,14 @@ public class BookController {
         return "add-book";
     }
     
-    @GetMapping("/editbook/{id}")
+    @GetMapping("/book/edit/{id}")
     public String showEditBookForm(@PathVariable("id") Long id, Model model) {
     	Book book = bookRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid book id:" + id));
     	model.addAttribute("book", book);
     	return "edit-book";
     }
     
-	@PostMapping("/addbook")
+	@PostMapping("/book/add")
 	public String addBook(@Valid Book book, BindingResult result, Model model) {
 	    
 		if (result.hasErrors()) {
@@ -59,21 +59,21 @@ public class BookController {
 	    }
 	    
 	    bookRepository.save(book);
-	    return "redirect:/index";	
+	    return "redirect:/books";	
 		}
 	
-	@PutMapping("/updatebook/{id}")
+	@PutMapping("/book/update/{id}")
 	public String  updateBook(@PathVariable("id") Long id, @Valid Book book, BindingResult result, Model model)  {
 		if (result.hasErrors()) {
 	        return "add-book";
 	    }
 	    book.setId(id);
 	    bookRepository.save(book);
-	    return "redirect:/index";	
+	    return "redirect:/books";	
 	}
 	
 	@SuppressWarnings("finally")
-	@DeleteMapping("/deletebook/{id}")
+	@DeleteMapping("/book/delete/{id}")
     public String delete(@PathVariable("id") Long id){
 		try 
 		{
@@ -83,7 +83,7 @@ public class BookController {
 			throw new IllegalArgumentException("Invalid book id:" + id);
 		}
 		finally {
-			return "redirect:/index";
+			return "redirect:/books";
 		}
 	}
 }

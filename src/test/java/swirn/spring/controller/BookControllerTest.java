@@ -64,9 +64,9 @@ class BookControllerTest {
     }
 
     @Test
-    void redirectToMain_ShouldRedirectToIndex() {
+    void redirectToMain_ShouldRedirectToBookList() {
         String result = bookController.redirectToMain();
-        assertEquals("redirect:/index", result);
+        assertEquals("redirect:/books", result);
     }
 
     @Test
@@ -78,7 +78,7 @@ class BookControllerTest {
         String viewName = bookController.showBookList(model);
 
         // Assert
-        assertEquals("index", viewName);
+        assertEquals("books", viewName);
         verify(model).addAttribute(eq("books"), anyList());
         verify(bookRepository).findAll();
     }
@@ -127,7 +127,7 @@ class BookControllerTest {
         String viewName = bookController.addBook(book, bindingResult, model);
 
         // Assert
-        assertEquals("redirect:/index", viewName);
+        assertEquals("redirect:/books", viewName);
         verify(bookRepository).save(book);
     }
 
@@ -157,7 +157,7 @@ class BookControllerTest {
         String viewName = bookController.updateBook(bookId, book, bindingResult, model);
 
         // Assert
-        assertEquals("redirect:/index", viewName);
+        assertEquals("redirect:/books", viewName);
         assertEquals(bookId, book.getId());
         verify(bookRepository).save(book);
     }
@@ -186,7 +186,7 @@ class BookControllerTest {
 
         // Assert
         verify(bookRepository, times(1)).deleteById(bookId);
-        assertEquals("redirect:/index", viewName);
+        assertEquals("redirect:/books", viewName);
         
     }
 }
