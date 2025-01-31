@@ -17,7 +17,7 @@ import lombok.Setter;
 @Entity
 @Getter @Setter @NoArgsConstructor
 @Table
-public class Borrowing {
+public class Rental {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
