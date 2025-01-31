@@ -53,10 +53,10 @@ class BookControllerTest {
 
     @BeforeEach
     void setUp() {
-    	book = new Book();
-    	book.setId(1L);
-    	book.setTitle("Nabchodzi burza");
-    	book.setAuthor("Thomas, Derek");
+    	this.book = new Book();
+    	this.book.setId(1L);
+    	this.book.setTitle("Nabchodzi burza");
+    	this.book.setAuthor("Thomas, Derek");
         MockitoAnnotations.openMocks(this);
         ReflectionTestUtils.setField(bookController, "bookRepository", bookRepository);
         mockMvc = MockMvcBuilders.standaloneSetup(bookController).build();
@@ -116,7 +116,6 @@ class BookControllerTest {
             bookController.showEditBookForm(bookId, model);
         });
     }
-
     @Test
     void addBook_WhenValidationPasses_ShouldSaveBookAndRedirectToIndex() {
         // Arrange
@@ -180,6 +179,7 @@ class BookControllerTest {
     void delete_ShouldDeleteBookAndRedirectToIndex() {
         // Arrange
         Long bookId = 1L;
+        
         
         // Act
         String viewName = bookController.delete(bookId);
