@@ -10,18 +10,22 @@
         
     </head>
     <body>
+    <div class="container-my-5">
+    	<h2 class="mb-5">Rent Book</h2>
+    	<div class="row">
+                <div class="col-md-6">
         <form th:action="@{/rentals/new}" th:object="${rental}" method="post">
-        <div>
+        <div class="row">
         	<input type="hidden" th:field="*{book.id}" />
-        	<div>
-            	<label>Book:</label>
-            	<span th:text="${book.title + ' by ' + book.author}"></span>
+        	<div class="form-group col-md-6">
+            	<label class="col-form-label">Book:</label>
+            	<span th:text="${book.title + ' by ' + book.author}"  class="form-control"></span>
         	</div>
         
         <!-- Wybór wypożyczającego -->
-        <div>
-            <label>Holder:</label>
-            <select th:field="*{holder.id}">
+        <div class="form-group col-md-6">
+            <label class="col-form-label">Holder:</label>
+            <select th:field="*{holder.id}"  class="form-control">
                 <option value="">Select a holder</option>
                 <option th:each="holder : ${holders}"
                         th:value="${holder.id}"
@@ -31,17 +35,21 @@
         </div>
         
         <!-- Daty wypożyczenia -->
-        <div>
-            <label>Start Date:</label>
-            <input type="date" th:field="*{startDate}" />
+        <div class="form-group col-md-6">
+            <label class="col-form-label">Start Date:</label>
+            <input type="date" th:field="*{startDate}"  class="form-control"/>
         </div>
         
-        <div>
-            <label>End Date:</label>
-            <input type="date" th:field="*{endDate}" />
+        <div class="form-group col-md-6">
+            <label class="col-form-label">End Date:</label>
+            <input type="date" th:field="*{endDate}"  class="form-control" />
         </div>
-        
-        <button type="submit">Rent Book</button>
+        <div class="col-md-6 mt-5">
+        	<input type="submit" class="btn btn-primary" value="Rent Book">
+        </div>
     </form>
+</div>
+</div>
+</div>
     </body>
 </html>
