@@ -22,6 +22,7 @@
                                     <th>Title</th>
                                     <th>Author</th>
                                     <th>Year</th>
+                                    <th>Rental</th>
                                     <th>Actions</th>
                             </thead>
                             <tbody>
@@ -29,6 +30,14 @@
                                 	<td th:text="${book.title}"></td>
                                     <td th:text="${book.author}"></td>
                                     <td th:text="${book.year}"></td>
+                                    <td>
+                                    <div th:unless="${#lists.isEmpty(book.rentals)}">
+                                    	<div th:each="rental : ${book.getRentals()}"> 
+                                    		<div th:if="${rental.endDate == null}">
+                                    			<div th:text="${rental.holder.name}"></div>
+                                    		</div>
+                                    	</div>
+                                    </div>
                                     <td class="action-buttons">
                                     <div>
                                     <form th:id="'edit' + ${book.id}" th:action="@{/book/edit/{id}(id=${book.id})}" method="get">
