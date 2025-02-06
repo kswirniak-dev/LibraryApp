@@ -1,6 +1,7 @@
 package swirn.spring.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,18 +11,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import jakarta.validation.Valid;
+import swirn.spring.domain.entity.Book;
 import swirn.spring.domain.entity.Holder;
 import swirn.spring.domain.entity.Rental;
 import swirn.spring.repository.BookRepository;
+import swirn.spring.repository.HolderRepository;
 import swirn.spring.repository.RentalRepository;
 
+@Controller
 public class RentalController {
 	
 	private final RentalRepository rentalRepository;
+	private final BookRepository bookRepository;
+	private final HolderRepository holderRepository;
 
     @Autowired
-    public RentalController(RentalRepository rentalRepository) {
+    public RentalController(RentalRepository rentalRepository, BookRepository bookRepository, HolderRepository holderRepository) {
         this.rentalRepository = rentalRepository;
+        this.bookRepository = bookRepository;
+        this.holderRepository = holderRepository;
     }
     
 	@GetMapping("/rentals")
@@ -30,13 +38,24 @@ public class RentalController {
         return "rentals";
     }
 	
-	@PostMapping("/rental/add")
+	@GetMapping("/book/{id}/rent")
+    public String addRentalToBook(@PathVariable("id") Long id, Model model) {
+    	Book book = bookRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid book id:" + id));
+    	Rental rental = new Rental();
+    	rental.setBook(book);
+    	model.addAttribute("rental", rental);    	
+    	model.addAttribute("book", book);
+    	model.addAttribute("holders", holderRepository.findAll());
+        return "add-rental";
+    }
+	
+	@PostMapping("/rentals/new")
 	public String addRental(@Valid Rental rental, BindingResult result, Model model) {
 	    if (result.hasErrors()) {
-	        return "add-holder";
+	        return "add-rental";
 	    }
 	    rentalRepository.save(rental);
-	    return "redirect:/holders";	
+	    return "redirect:/books";	
 		}
 
 	@SuppressWarnings("finally")

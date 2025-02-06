@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>New Rental</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+        
+    </head>
+    <body>
+        <form th:action="@{/rentals/new}" th:object="${rental}" method="post">
+        <div>
+        	<input type="hidden" th:field="*{book.id}" />
+        	<div>
+            	<label>Book:</label>
+            	<span th:text="${book.title + ' by ' + book.author}"></span>
+        	</div>
+        
+        <!-- Wybór wypożyczającego -->
+        <div>
+            <label>Holder:</label>
+            <select th:field="*{holder.id}">
+                <option value="">Select a holder</option>
+                <option th:each="holder : ${holders}"
+                        th:value="${holder.id}"
+                        th:text="${holder.name}">
+                </option>
+            </select>
+        </div>
+        
+        <!-- Daty wypożyczenia -->
+        <div>
+            <label>Start Date:</label>
+            <input type="date" th:field="*{startDate}" />
+        </div>
+        
+        <div>
+            <label>End Date:</label>
+            <input type="date" th:field="*{endDate}" />
+        </div>
+        
+        <button type="submit">Rent Book</button>
+    </form>
+    </body>
+</html>

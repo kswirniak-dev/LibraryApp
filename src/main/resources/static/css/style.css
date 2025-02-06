@@ -1,0 +1,7 @@
+.action-buttons {
+display: block;
+}
+
+.action-buttons div {
+	display: inline-block;
+}

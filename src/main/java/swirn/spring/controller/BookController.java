@@ -16,16 +16,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import swirn.spring.domain.entity.Book;
+import swirn.spring.domain.entity.Rental;
 import swirn.spring.repository.BookRepository;
+import swirn.spring.repository.HolderRepository;
 
 @Controller
 public class BookController {
 	
 	private final BookRepository bookRepository;
+	private final HolderRepository holderRepository;
 
     @Autowired
-    public BookController(BookRepository bookRepository) {
+    public BookController(BookRepository bookRepository, HolderRepository holderRepository) {
         this.bookRepository = bookRepository;
+		this.holderRepository = holderRepository;
     }
     
     @GetMapping("/")
