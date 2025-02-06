@@ -8,6 +8,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -23,11 +26,11 @@ public class Rental {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "book_id")
 	private Book book;
 	
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "holder_id")
 	private Holder holder;
 	
