@@ -14,8 +14,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.BindingResult;
 import org.springframework.ui.Model;
 
-import swirn.spring.domain.entity.Book;
+import swirn.spring.dto.BookDTO;
 import swirn.spring.repository.BookRepository;
+import swirn.spring.service.BookService;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
@@ -38,7 +40,7 @@ class BookControllerTest {
     private MockMvc mockMvc;
 
     @Mock
-    private BookRepository bookRepository;
+    private BookService bookService;
 
     @Mock
     private Model model;
@@ -47,18 +49,18 @@ class BookControllerTest {
     private BindingResult bindingResult;
     
     @InjectMocks
-    private BookController bookController;
+    private BookApiController bookController;
     
-    Book book;
+    BookDTO book;
 
     @BeforeEach
     void setUp() {
-    	this.book = new Book();
+    	this.book = new BookDTO();
     	this.book.setId(1L);
     	this.book.setTitle("Nabchodzi burza");
     	this.book.setAuthor("Thomas, Derek");
         MockitoAnnotations.openMocks(this);
-        ReflectionTestUtils.setField(bookController, "bookRepository", bookRepository);
+        ReflectionTestUtils.setField(bookController, "bookService", bookService);
         mockMvc = MockMvcBuilders.standaloneSetup(bookController).build();
              
     }
@@ -72,7 +74,7 @@ class BookControllerTest {
     @Test
     void showBookList_ShouldAddBooksToModelAndRenderIndexPage() {
         // Arrange
-        when(bookRepository.findAll()).thenReturn(Collections.emptyList());
+        when(bookService.getAll()).thenReturn(Collections.emptyList());
 
         // Act
         String viewName = bookController.showBookList(model);
@@ -80,12 +82,12 @@ class BookControllerTest {
         // Assert
         assertEquals("books", viewName);
         verify(model).addAttribute(eq("books"), anyList());
-        verify(bookRepository).findAll();
+        verify(bookService).getAll();
     }
 
     @Test
     void showSignUpForm_ShouldRenderAddBookPage() {
-        Book book = new Book();
+        BookDTO book = new BookDTO();
         String viewName = bookController.showSignUpForm(book);
         assertEquals("add-book", viewName);
     }
@@ -94,9 +96,9 @@ class BookControllerTest {
     void showEditBookForm_WhenBookExists_ShouldAddBookToModelAndRenderEditPage() {
         // Arrange
         Long bookId = 1L;
-        Book book = new Book();
+        BookDTO book = new BookDTO();
         book.setId(bookId);
-        when(bookRepository.findById(bookId)).thenReturn(Optional.of(book));
+        when(bookService.getById(bookId)).thenReturn(book);
 
         // Act
         String viewName = bookController.showEditBookForm(bookId, model);
@@ -120,20 +122,20 @@ class BookControllerTest {
     void addBook_WhenValidationPasses_ShouldSaveBookAndRedirectToIndex() {
         // Arrange
         when(bindingResult.hasErrors()).thenReturn(false);
-        when(bookRepository.save(book)).thenReturn(book);
+        when(bookService.save(book)).thenReturn(book);
 
         // Act
         String viewName = bookController.addBook(book, bindingResult, model);
 
         // Assert
         assertEquals("redirect:/books", viewName);
-        verify(bookRepository).save(book);
+        verify(bookService).save(book);
     }
 
     @Test
     void addBook_WhenValidationFails_ShouldReturnAddBookPage() {
         // Arrange
-        Book book = new Book();
+        BookDTO book = new BookDTO();
         when(bindingResult.hasErrors()).thenReturn(true);
 
         // Act
@@ -141,16 +143,16 @@ class BookControllerTest {
 
         // Assert
         assertEquals("add-book", viewName);
-        verify(bookRepository, never()).save(book);
+        verify(bookService, never()).save(book);
     }
 
     @Test
     void updateBook_WhenValidationPasses_ShouldUpdateBookAndRedirectToIndex() {
         // Arrange
         Long bookId = 1L;
-        Book book = new Book();
+        BookDTO book = new BookDTO();
         when(bindingResult.hasErrors()).thenReturn(false);
-        when(bookRepository.save(any(Book.class))).thenReturn(book);
+        when(bookService.save(any(BookDTO.class))).thenReturn(book);
 
         // Act
         String viewName = bookController.updateBook(bookId, book, bindingResult, model);
@@ -158,7 +160,7 @@ class BookControllerTest {
         // Assert
         assertEquals("redirect:/books", viewName);
         assertEquals(bookId, book.getId());
-        verify(bookRepository).save(book);
+        verify(bookService).save(book);
     }
 
     @Test
@@ -172,7 +174,7 @@ class BookControllerTest {
 
         // Assert
         assertEquals("add-book", viewName);
-        verify(bookRepository, never()).save(book);
+        verify(bookService, never()).save(book);
     }
 
     @Test
@@ -185,7 +187,7 @@ class BookControllerTest {
         String viewName = bookController.delete(bookId);
 
         // Assert
-        verify(bookRepository, times(1)).deleteById(bookId);
+        verify(bookService, times(1)).deleteById(bookId);
         assertEquals("redirect:/books", viewName);
         
     }
