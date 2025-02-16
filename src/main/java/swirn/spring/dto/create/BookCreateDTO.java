@@ -10,5 +10,4 @@ public class BookCreateDTO {
 	    private String title;
 	    private String author;
 	    private Year year;
-	}
 }
