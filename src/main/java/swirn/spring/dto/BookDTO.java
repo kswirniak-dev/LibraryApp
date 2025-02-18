@@ -1,6 +1,7 @@
 package swirn.spring.dto;
 
 import java.time.Year;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,5 +12,6 @@ public class BookDTO {
 	    private String title;
 	    private String author;
 	    private Year year;
+	    private List<RentalDTO> rentals;
 }
 

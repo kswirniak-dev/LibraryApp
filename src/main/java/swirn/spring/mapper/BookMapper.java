@@ -10,7 +10,7 @@ import org.mapstruct.Mapping;
 import swirn.spring.domain.entity.Book;
 import swirn.spring.dto.BookDTO;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface BookMapper {
 
     BookDTO bookToBookDTO(Book entity);

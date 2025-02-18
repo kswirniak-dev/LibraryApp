@@ -12,4 +12,5 @@ public class RentalDTO {
     private Long holderId;
     private LocalDate startDate;
     private LocalDate endDate;
+    private HolderDTO holder;
 }
