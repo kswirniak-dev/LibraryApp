@@ -55,7 +55,7 @@ public class BookApiController {
 	    return bookService.save(book); 	
 	}
     @ResponseStatus(code = HttpStatus.NO_CONTENT )
-	@DeleteMapping("/book/delete/{id}")
+	@DeleteMapping("{id}")
     public void delete(@PathVariable("id") Long id)	{		
 		bookService.deleteById(id);
 	}
