@@ -14,7 +14,7 @@
             <h2 class="mb-5">Edit Book</h2>
             <div class="row">
                 <div class="col-md-6">
-                    <form action="#" th:action="@{api/v1/books/update/{id}(id=${book.id})}" th:object="${book}" th:method="put">
+                    <form action="#" th:action="@{/books/{id} (id=${book.id})}" th:object="${book}" method="post">
                         <div class="row">
                             <div class="form-group col-md-6">
                                 <label for="name" class="col-form-label">Title</label>

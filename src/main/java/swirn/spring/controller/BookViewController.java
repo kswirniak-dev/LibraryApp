@@ -5,6 +5,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,21 +34,31 @@ public class BookViewController {
 	@GetMapping("add")
 	public String addView(Model model){
 		model.addAttribute("book", new BookDTO());
-
 		return "book/add";
 	}
 	
 	@PostMapping
 	public String add(BookDTO book){
 		bookService.save(book);
-		return "redirect:/book/list";
+		return "redirect:/books";
+	}
+	
+	@PostMapping("{id}")
+	public String update(BookDTO book, @PathVariable Long id){
+		bookService.update(id, book);
+		return "redirect:/books";
 	}
 	
 	@GetMapping("{id}")
 	public String singleView(Model model, @PathVariable Long id){
 		model.addAttribute("book", bookService.getById(id));
-
 		return "book/edit";
+	}
+	
+	@DeleteMapping("{id}/delete")
+	public String deleteView(@PathVariable Long id) {
+		bookService.deleteById(id);
+		return "redirect:/books";
 	}
 	
 	
