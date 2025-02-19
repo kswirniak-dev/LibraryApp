@@ -11,18 +11,15 @@ import swirn.spring.service.BookService;
 import swirn.spring.service.HolderService;
 
 import java.util.List;
-
+@RestController
+@RequestMapping("api/v1/holders")
 public class HolderApiController {
-
-    @RestController
-    @RequestMapping("api/v1/holders")
-    public class BookApiController {
 
         private final HolderService holderService;
         private final HolderRepository holderRepository;
 
         @Autowired
-        public BookApiController(HolderService holderService, HolderRepository holderRepository) {
+        public HolderApiController(HolderService holderService, HolderRepository holderRepository) {
             this.holderService = holderService;
             this.holderRepository = holderRepository;
         }
@@ -49,5 +46,5 @@ public class HolderApiController {
         public void delete(@PathVariable("id") Long id)	{
             holderRepository.deleteById(id);
         }
-    }
 }
+
