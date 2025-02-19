@@ -52,7 +52,7 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	@Transactional
-	public BookDTO save(BookDTO book) {
+	public BookDTO create(BookDTO book) {
 		Book savedBook = bookRepository.save(bookMapper.bookDTOtoBook(book));
 		return bookMapper.bookToBookDTO(savedBook);
 	}
