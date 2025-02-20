@@ -1,13 +1,11 @@
-package swirn.spring.controller;
+package swirn.spring.controller.rest;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import swirn.spring.dto.BookDTO;
 import swirn.spring.dto.HolderDTO;
 import swirn.spring.repository.HolderRepository;
-import swirn.spring.service.BookService;
 import swirn.spring.service.HolderService;
 
 import java.util.List;
