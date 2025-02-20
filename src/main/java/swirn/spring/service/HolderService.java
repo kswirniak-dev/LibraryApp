@@ -1,6 +1,5 @@
 package swirn.spring.service;
 
-import swirn.spring.dto.BookDTO;
 import swirn.spring.dto.HolderDTO;
 
 import java.util.List;
@@ -11,7 +10,7 @@ public interface HolderService {
 
     HolderDTO getById(Long id);
 
-    HolderDTO deleteById(Long id);
+    void deleteById(Long id);
 
     HolderDTO create(HolderDTO book);
 
