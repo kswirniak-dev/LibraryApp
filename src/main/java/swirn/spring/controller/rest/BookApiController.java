@@ -15,20 +15,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import swirn.spring.dto.BookDTO;
-import swirn.spring.repository.HolderRepository;
 import swirn.spring.service.BookService;
+import swirn.spring.service.HolderService;
 
 @RestController
 @RequestMapping("api/v1/books")
 public class BookApiController {
 	
 	private final BookService bookService;
-	private final HolderRepository holderRepository;
+	private final HolderService holderService;
 
     @Autowired
-    public BookApiController(BookService bookService, HolderRepository holderRepository) {
+    public BookApiController(BookService bookService, HolderService holderService) {
         this.bookService = bookService;
-		this.holderRepository = holderRepository;
+		this.holderService = holderService;
     }
     @ResponseStatus(code = HttpStatus.OK)
     @GetMapping
