@@ -44,10 +44,8 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	@Transactional
-	public BookDTO deleteById(Long id) {
-		Book book = bookRepository.findById(id).orElseThrow(() -> new IllegalArgumentException());
+	public void deleteById(Long id) {
 		bookRepository.deleteById(id);
-		return bookMapper.bookToBookDTO(book);
 	}
 
 	@Override
