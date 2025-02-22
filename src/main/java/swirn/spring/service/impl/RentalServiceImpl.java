@@ -2,6 +2,7 @@ package swirn.spring.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import swirn.spring.dto.RentalDTO;
 import swirn.spring.mapper.RentalMapper;
 import swirn.spring.repository.RentalRepository;
@@ -21,6 +22,7 @@ public class RentalServiceImpl implements RentalService {
 
 
     @Override
+    @Transactional(readOnly = true)
     public List<RentalDTO> getAll() {
         return rentalRepository
                 .findAll()
@@ -30,24 +32,28 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public RentalDTO getById(Long id) {
-        return rentalMapper.rentalToRentalDTO(rentalRepository.findById(id).orElseThrow(() -> new IllegalArgumentException()));
+        return rentalMapper.rentalToRentalDTO(rentalRepository.findById(id).orElseThrow(IllegalArgumentException::new));
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         rentalRepository.deleteById(id);
     }
 
     @Override
+    @Transactional
     public RentalDTO create(RentalDTO rental) {
         return rentalMapper.rentalToRentalDTO(rentalRepository.save(rentalMapper.rentalDTOtoRental(rental)));
     }
 
     @Override
+    @Transactional
     public RentalDTO update(Long id, RentalDTO rental) {
-        RentalDTO rentalFromRepo = rentalMapper.rentalToRentalDTO(rentalRepository.findById(id).orElseThrow(() -> new IllegalArgumentException()));
-        rentalFromRepo.setBookId(rental.getBookId());
+        RentalDTO rentalFromRepo = rentalMapper.rentalToRentalDTO(rentalRepository.findById(id).orElseThrow(IllegalArgumentException::new));
+        rentalFromRepo.setBook(rental.getBook());
         rentalFromRepo.setHolder(rental.getHolder());
         rentalFromRepo.setStartDate(rental.getStartDate());
         rentalFromRepo.setEndDate(rental.getEndDate());

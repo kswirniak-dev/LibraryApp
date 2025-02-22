@@ -14,7 +14,7 @@
     	<h2 class="mb-5">Rent Book</h2>
     	<div class="row">
                 <div class="col-md-6">
-        <form th:action="@{/rentals/new}" th:object="${rental}" method="post">
+        <form th:action="@{/rentals/add}" th:object="${rental}" method="post">
         <div class="row">
         	<input type="hidden" th:field="*{book.id}" />
         	<div class="form-group col-md-6">
@@ -47,7 +47,8 @@
         <div class="col-md-6 mt-5">
         	<input type="submit" class="btn btn-primary" value="Rent Book">
         </div>
-    </form>
+            </div>
+        </form>
 </div>
 </div>
 </div>

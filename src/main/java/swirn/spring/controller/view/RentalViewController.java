@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import swirn.spring.dto.BookDTO;
 import swirn.spring.dto.RentalDTO;
+import swirn.spring.mapper.BookMapper;
 import swirn.spring.service.BookService;
 import swirn.spring.service.HolderService;
 import swirn.spring.service.RentalService;
@@ -21,31 +22,34 @@ public class RentalViewController {
 	private final BookService bookService;
 	private final HolderService holderService;
 
+	private final BookMapper bookMapper;
+
 	@Autowired
-	public RentalViewController(RentalService rentalService, BookService bookService, HolderService holderService) {
+	public RentalViewController(RentalService rentalService, BookService bookService, HolderService holderService, BookMapper bookMapper) {
 		this.rentalService = rentalService;
 		this.bookService = bookService;
 		this.holderService = holderService;
+		this.bookMapper = bookMapper;
 	}
 
-	@GetMapping("/rentals")
+	@GetMapping()
     public String rentalsView(Model model) {
         model.addAttribute("rentals", rentalService.getAll());
-        return "rentals";
+        return "rental/list";
     }
 	
-	@GetMapping("/{book-id}/rent")
+	@GetMapping("book/{book-id}/rent")
     public String bookRentalView(@PathVariable("book-id") Long id, Model model) {
     	BookDTO book = bookService.getById(id);
     	RentalDTO rental = new RentalDTO();
-    	rental.setBookId(id);
+		rental.setBook(bookMapper.bookDTOtoBookSimpleDTO(book));
     	model.addAttribute("rental", rental);    	
     	model.addAttribute("book", book);
     	model.addAttribute("holders", holderService.getAll());
         return "rental/add";
     }
 	
-	@PostMapping("add")
+	@GetMapping("add")
 	public String addRental(@Valid RentalDTO rental, BindingResult result) {
 	    if (result.hasErrors()) {
 	        return "rental/add";

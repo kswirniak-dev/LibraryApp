@@ -12,7 +12,7 @@ import swirn.spring.service.RentalService;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/holders")
+@RequestMapping("api/v1/rentals")
 public class RentalApiController {
 
     private final RentalService rentalService;
