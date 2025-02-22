@@ -13,5 +13,6 @@ public class BookDTO {
 	    private String author;
 	    private Year year;
 	    private List<RentalDTO> rentals;
+		private boolean isBorrowed;
 }
 

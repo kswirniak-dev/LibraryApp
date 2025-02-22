@@ -1,5 +1,6 @@
 package swirn.spring.domain.entity;
 
+import java.time.LocalDate;
 import java.time.Year;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.Transient;
 
 @Entity
 @NoArgsConstructor
@@ -40,5 +42,12 @@ public class Book {
 	@OneToMany(mappedBy = "book")
 	@Getter @Setter
 	private List<Rental> rentals;
+
+	@Transient
+	public boolean isBorrowed() {
+		return rentals.stream()
+				.anyMatch( r ->  (r.getStartDate().isBefore(LocalDate.now()) && r.getEndDate() == null )
+						|| r.getEndDate().isAfter(LocalDate.now()) );
+	}
 
 }

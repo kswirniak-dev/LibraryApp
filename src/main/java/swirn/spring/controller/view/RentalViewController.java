@@ -49,7 +49,7 @@ public class RentalViewController {
         return "rental/add";
     }
 	
-	@GetMapping("add")
+	@PostMapping("add")
 	public String addRental(@Valid RentalDTO rental, BindingResult result) {
 	    if (result.hasErrors()) {
 	        return "rental/add";

@@ -20,10 +20,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class BookServiceImpl implements BookService {
-	
+
 	private final BookRepository bookRepository;
 	private final BookMapper bookMapper;
-	
+
 	@Autowired
 	public BookServiceImpl(BookRepository bookRepository, BookMapper bookMapper) {
 		this.bookRepository = bookRepository;
@@ -33,13 +33,13 @@ public class BookServiceImpl implements BookService {
 	@Override
 	@Transactional(readOnly = true)
 	public List<BookDTO> getAll() {
-		return bookMapper.convertBookListToBookDTOList(bookRepository.findAll());		
+		return bookMapper.convertBookListToBookDTOList(bookRepository.findAll());
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public BookDTO getById(Long id) {
-		return bookMapper.bookToBookDTO(bookRepository.findById(id).orElseThrow(() -> new IllegalArgumentException()));
+		return bookMapper.bookToBookDTO(bookRepository.findById(id).orElseThrow(IllegalArgumentException::new));
 	}
 
 	@Override
@@ -54,16 +54,15 @@ public class BookServiceImpl implements BookService {
 		Book savedBook = bookRepository.save(bookMapper.bookDTOtoBook(book));
 		return bookMapper.bookToBookDTO(savedBook);
 	}
-	
+
 	@Override
 	@Transactional
 	public BookDTO update(Long id, BookDTO book) {
-		BookDTO bookFromRepo = bookMapper.bookToBookDTO(bookRepository.findById(id).orElseThrow(() -> new IllegalArgumentException()));
+		BookDTO bookFromRepo = bookMapper.bookToBookDTO(bookRepository.findById(id).orElseThrow((IllegalArgumentException::new)));
 		bookFromRepo.setTitle(book.getTitle());
 		bookFromRepo.setAuthor(book.getAuthor());
 		bookFromRepo.setYear(book.getYear());
 		Book savedBook = bookRepository.save(bookMapper.bookDTOtoBook(bookFromRepo));
 		return bookMapper.bookToBookDTO(savedBook);
 	}
-
 }
