@@ -9,10 +9,11 @@ import swirn.spring.dto.RentalDTO;
 
 @Mapper(componentModel = "spring")
 public interface RentalMapper {
-	
-    RentalDTO rentalToRentalDTO(Rental entity);
 
     Rental rentalDTOtoRental(RentalDTO dto);
+
+    RentalDTO rentalToRentalDTO(Rental rental);
+
     
     List<Rental> convertRentalDTOListToRentalList(List<RentalDTO> list);
 
