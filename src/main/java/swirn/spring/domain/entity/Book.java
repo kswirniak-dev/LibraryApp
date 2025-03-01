@@ -51,14 +51,15 @@ public class Book {
 						|| r.getEndDate().isAfter(LocalDate.now()) );
 	}
 	@Transient
-	public Rental getActiveRental() {
-		Optional<Rental> rental =  rentals.stream().filter( r ->  r.getStartDate().isBefore(LocalDate.now()) && ( r.getEndDate() == null
-				|| r.getEndDate().isAfter(LocalDate.now()))).findFirst();
-		if (rental.isEmpty()) {
-			return null;
+	public Optional<Rental> getActiveRental() {
+		if (rentals == null) {
+			return Optional.empty();
 		}
-		else {
-			return rental.get();
-		}
+
+		return rentals.stream()
+				.filter(r -> r.getStartDate().isBefore(LocalDate.now().plusDays(1))
+						&& (r.getEndDate() == null || r.getEndDate().isAfter(LocalDate.now())))
+				.findFirst();
 	}
+
 }
