@@ -1,23 +1,37 @@
 package swirn.spring.service.impl;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import swirn.spring.domain.entity.Book;
+import swirn.spring.domain.entity.Holder;
+import swirn.spring.domain.entity.Rental;
 import swirn.spring.dto.RentalDTO;
 import swirn.spring.mapper.RentalMapper;
+import swirn.spring.repository.BookRepository;
+import swirn.spring.repository.HolderRepository;
 import swirn.spring.repository.RentalRepository;
 import swirn.spring.service.RentalService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 @Service
 public class RentalServiceImpl implements RentalService {
     private final RentalRepository rentalRepository;
     private final RentalMapper rentalMapper;
+
+    private final BookRepository bookRepository;
+
+    private final HolderRepository holderRepository;
+
     @Autowired
-    public RentalServiceImpl(RentalRepository rentalRepository, RentalMapper rentalMapper) {
+    public RentalServiceImpl(RentalRepository rentalRepository, RentalMapper rentalMapper, BookRepository bookRepository, HolderRepository holderRepository) {
         this.rentalRepository = rentalRepository;
         this.rentalMapper = rentalMapper;
+        this.bookRepository = bookRepository;
+        this.holderRepository = holderRepository;
     }
 
 
@@ -45,19 +59,57 @@ public class RentalServiceImpl implements RentalService {
 
     @Override
     @Transactional
-    public RentalDTO create(RentalDTO rental) {
-        return rentalMapper.rentalToRentalDTO(rentalRepository.save(rentalMapper.rentalDTOtoRental(rental)));
+    public RentalDTO create(RentalDTO rentalDTO) {
+        Book book = bookRepository.findById(rentalDTO.getBook().getId())
+                .orElseThrow(() -> new EntityNotFoundException("Book not found"));
+
+        Holder holder = holderRepository.findById(rentalDTO.getHolder().getId())
+                .orElseThrow(() -> new EntityNotFoundException("Holder not found"));
+
+        Rental rental = new Rental();
+        rental.setBook(book);
+        rental.setHolder(holder);
+        rental.setStartDate(rentalDTO.getStartDate());
+        rental.setEndDate(rentalDTO.getEndDate());
+
+        // Update the book's rental collection (important for bidirectional relationship)
+        if (book.getRentals() == null) {
+            book.setRentals(new ArrayList<>());
+        }
+        book.getRentals().add(rental);
+        if (holder.getRentals() == null) {
+            holder.setRentals(new ArrayList<>());
+        }
+        holder.getRentals().add(rental);
+
+        // Save the rental
+        Rental savedRental = rentalRepository.save(rental);
+        return rentalMapper.rentalToRentalDTO(savedRental);
     }
+
 
     @Override
     @Transactional
-    public RentalDTO update(Long id, RentalDTO rental) {
-        RentalDTO rentalFromRepo = rentalMapper.rentalToRentalDTO(rentalRepository.findById(id).orElseThrow(IllegalArgumentException::new));
-        rentalFromRepo.setBook(rental.getBook());
-        rentalFromRepo.setHolder(rental.getHolder());
-        rentalFromRepo.setStartDate(rental.getStartDate());
-        rentalFromRepo.setEndDate(rental.getEndDate());
-        rentalRepository.save(rentalMapper.rentalDTOtoRental(rentalFromRepo));
-        return rentalFromRepo;
+    public RentalDTO update(Long id, RentalDTO rentalDTO) {
+
+        Rental existingRental = rentalRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Rental not found with id: " + id));
+
+        Book book = bookRepository.findById(rentalDTO.getBook().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Book not found"));
+
+        Holder holder = holderRepository.findById(rentalDTO.getHolder().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Holder not found"));
+
+
+        existingRental.setBook(book);
+        existingRental.setHolder(holder);
+        existingRental.setStartDate(rentalDTO.getStartDate());
+        existingRental.setEndDate(rentalDTO.getEndDate());
+
+
+        Rental savedRental = rentalRepository.save(existingRental);
+
+        return rentalMapper.rentalToRentalDTO(savedRental);
     }
 }

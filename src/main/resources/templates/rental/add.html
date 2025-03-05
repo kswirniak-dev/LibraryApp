@@ -1,57 +1,61 @@
-<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>New Rental</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
-        
-    </head>
-    <body>
-    <div th:replace="fragments/topnav :: navbar"></div>
-    <div class="container-my-5">
-    	<h2 class="mb-5">Rent Book</h2>
-    	<div class="row">
-                <div class="col-md-6">
-        <form th:action="@{/rentals/add}" th:object="${rental}" method="post">
-        <div class="row">
-        	<input type="hidden" th:field="*{book.id}" />
-        	<div class="form-group col-md-6">
-            	<label class="col-form-label">Book:</label>
-            	<span th:text="${book.title + ' by ' + book.author}" class="form-control"></span>
-        	</div>
-        
-        <!-- Wybór wypożyczającego -->
-        <div class="form-group col-md-6">
-            <label class="col-form-label">Holder:</label>
-            <select th:field="*{holder.id}" class="form-control">
-                <option value="">Select a holder</option>
-                <option th:each="holder : ${holders}"
-                        th:value="${holder.id}"
-                        th:text="${holder.name}">
-                </option>
-            </select>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>New Rental</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+</head>
+<body>
+<div th:replace="fragments/topnav :: navbar"></div>
+<div class="container my-5">
+    <h2 class="mb-5">Rent Book</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <form th:action="@{/rentals/add}" th:object="${rental}" method="post">
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label class="col-form-label">Book:</label>
+                        <select th:field="*{book.id}" class="form-control">
+                            <option value="">Select a book</option>
+                            <option th:each="book : ${books}"
+                                    th:value="${book.id}"
+                                    th:text="${book.title}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- Holder selection -->
+                    <div class="form-group col-md-6">
+                        <label class="col-form-label">Holder:</label>
+                        <select th:field="*{holder.id}" class="form-control">
+                            <option value="">Select a holder</option>
+                            <option th:each="holder : ${holders}"
+                                    th:value="${holder.id}"
+                                    th:text="${holder.name}">
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- Rental dates -->
+                    <div class="form-group col-md-6">
+                        <label class="col-form-label">Start Date:</label>
+                        <input type="date" th:field="*{startDate}" class="form-control"/>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <label class="col-form-label">End Date:</label>
+                        <input type="date" th:field="*{endDate}" class="form-control" />
+                    </div>
+
+                    <div class="col-md-12 mt-3">
+                        <input type="submit" class="btn btn-primary" value="Rent Book">
+                    </div>
+                </div>
+            </form>
         </div>
-        
-        <!-- Daty wypożyczenia -->
-        <div class="form-group col-md-6">
-            <label class="col-form-label">Start Date:</label>
-            <input type="date" th:field="*{startDate}" class="form-control"/>
-        </div>
-        
-        <div class="form-group col-md-6">
-            <label class="col-form-label">End Date:</label>
-            <input type="date" th:field="*{endDate}"  class="form-control" />
-        </div>
-        <div class="col-md-6 mt-5">
-        	<input type="submit" class="btn btn-primary" value="Rent Book">
-        </div>
-            </div>
-        </form>
+    </div>
 </div>
-</div>
-</div>
-    </body>
+</body>
 </html>

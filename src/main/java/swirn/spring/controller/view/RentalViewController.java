@@ -7,7 +7,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
-import swirn.spring.dto.BookDTO;
 import swirn.spring.dto.RentalDTO;
 import swirn.spring.mapper.BookMapper;
 import swirn.spring.service.BookService;
@@ -38,13 +37,11 @@ public class RentalViewController {
         return "rental/list";
     }
 	
-	@GetMapping("book/{book-id}/rent")
-    public String bookRentalView(@PathVariable("book-id") Long id, Model model) {
-    	BookDTO book = bookService.getById(id);
+	@GetMapping("add")
+    public String bookRentalView(Model model) {
     	RentalDTO rental = new RentalDTO();
-		rental.setBook(bookMapper.bookDTOtoBookSimpleDTO(book));
-    	model.addAttribute("rental", rental);    	
-    	model.addAttribute("book", book);
+		model.addAttribute("rental", rental);
+    	model.addAttribute("books", bookService.getAll());
     	model.addAttribute("holders", holderService.getAll());
         return "rental/add";
     }
@@ -70,10 +67,12 @@ public class RentalViewController {
     public String editView(@PathVariable("id") Long id, Model model) {
     	RentalDTO rental = rentalService.getById(id);
     	model.addAttribute("rental", rental);
+		model.addAttribute("books", bookService.getAll());
+		model.addAttribute("holders", holderService.getAll());
     	return "rental/edit";
     }
     
-    @PutMapping("/rental/{id}/update")
+    @PutMapping("{id}/update")
 	public String updateRental(@PathVariable("id") Long id, @Valid RentalDTO rental, BindingResult result)  {
 		if (result.hasErrors()) {
 	        return "rental/edit";

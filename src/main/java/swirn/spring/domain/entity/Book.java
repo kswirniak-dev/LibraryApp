@@ -5,17 +5,10 @@ import java.time.Year;
 import java.util.List;
 import java.util.Optional;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.Transient;
 
 @Entity
 @NoArgsConstructor
@@ -40,7 +33,7 @@ public class Book {
 	private Year year;
 	
 	@Column
-	@OneToMany(mappedBy = "book")
+	@OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
 	@Getter @Setter
 	private List<Rental> rentals;
 

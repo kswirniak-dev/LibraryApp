@@ -22,6 +22,6 @@ public class Holder {
 	@Column
 	private String contactNumber;
 
-	@OneToMany(mappedBy = "holder")
+	@OneToMany(mappedBy = "holder", cascade = CascadeType.ALL)
 	private List<Rental> rentals;
 }

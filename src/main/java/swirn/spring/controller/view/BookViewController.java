@@ -23,9 +23,15 @@ public class BookViewController {
     }
 	
 	@GetMapping
-	public String indexView(Model model){
+	public String booksView(Model model){
 		model.addAttribute("books", bookService.getAll());
 		return "book/list";
+	}
+
+	@GetMapping("main")
+	public String extendedBooksView(Model model) {
+		model.addAttribute("books", bookService.getAll());
+		return "index";
 	}
 	
 	@GetMapping("add")
