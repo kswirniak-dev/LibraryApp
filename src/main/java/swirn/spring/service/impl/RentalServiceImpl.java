@@ -101,7 +101,6 @@ public class RentalServiceImpl implements RentalService {
         Holder holder = holderRepository.findById(rentalDTO.getHolder().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Holder not found"));
 
-
         existingRental.setBook(book);
         existingRental.setHolder(holder);
         existingRental.setStartDate(rentalDTO.getStartDate());
