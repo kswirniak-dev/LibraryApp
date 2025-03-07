@@ -54,6 +54,10 @@ public class RentalServiceImpl implements RentalService {
     @Override
     @Transactional
     public void deleteById(Long id) {
+        if (!rentalRepository.existsById(id))
+        {
+            throw new EntityNotFoundException("Rental with id " + id + " not found");
+        }
         rentalRepository.deleteById(id);
     }
 
@@ -72,7 +76,6 @@ public class RentalServiceImpl implements RentalService {
         rental.setStartDate(rentalDTO.getStartDate());
         rental.setEndDate(rentalDTO.getEndDate());
 
-        // Update the book's rental collection (important for bidirectional relationship)
         if (book.getRentals() == null) {
             book.setRentals(new ArrayList<>());
         }
@@ -82,7 +85,6 @@ public class RentalServiceImpl implements RentalService {
         }
         holder.getRentals().add(rental);
 
-        // Save the rental
         Rental savedRental = rentalRepository.save(rental);
         return rentalMapper.rentalToRentalDTO(savedRental);
     }
