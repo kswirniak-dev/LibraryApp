@@ -21,13 +21,12 @@ import java.util.stream.Collectors;
 public class RentalServiceImpl implements RentalService {
     private final RentalRepository rentalRepository;
     private final RentalMapper rentalMapper;
-
     private final BookRepository bookRepository;
-
     private final HolderRepository holderRepository;
 
     @Autowired
-    public RentalServiceImpl(RentalRepository rentalRepository, RentalMapper rentalMapper, BookRepository bookRepository, HolderRepository holderRepository) {
+    public RentalServiceImpl(RentalRepository rentalRepository, RentalMapper rentalMapper, BookRepository bookRepository, HolderRepository holderRepository)
+    {
         this.rentalRepository = rentalRepository;
         this.rentalMapper = rentalMapper;
         this.bookRepository = bookRepository;
@@ -37,7 +36,8 @@ public class RentalServiceImpl implements RentalService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<RentalDTO> getAll() {
+    public List<RentalDTO> getAll()
+    {
         return rentalRepository
                 .findAll()
                 .stream()
@@ -47,13 +47,15 @@ public class RentalServiceImpl implements RentalService {
 
     @Override
     @Transactional(readOnly = true)
-    public RentalDTO getById(Long id) {
-        return rentalMapper.rentalToRentalDTO(rentalRepository.findById(id).orElseThrow(IllegalArgumentException::new));
+    public RentalDTO getById(Long id)
+    {
+        return rentalMapper.rentalToRentalDTO(rentalRepository.findById(id).orElseThrow(EntityNotFoundException::new));
     }
 
     @Override
     @Transactional
-    public void deleteById(Long id) {
+    public void deleteById(Long id)
+    {
         if (!rentalRepository.existsById(id))
         {
             throw new EntityNotFoundException("Rental with id " + id + " not found");
@@ -63,7 +65,8 @@ public class RentalServiceImpl implements RentalService {
 
     @Override
     @Transactional
-    public RentalDTO create(RentalDTO rentalDTO) {
+    public RentalDTO create(RentalDTO rentalDTO)
+    {
         Book book = bookRepository.findById(rentalDTO.getBook().getId())
                 .orElseThrow(() -> new EntityNotFoundException("Book not found"));
 
@@ -76,11 +79,13 @@ public class RentalServiceImpl implements RentalService {
         rental.setStartDate(rentalDTO.getStartDate());
         rental.setEndDate(rentalDTO.getEndDate());
 
-        if (book.getRentals() == null) {
+        if (book.getRentals() == null)
+        {
             book.setRentals(new ArrayList<>());
         }
         book.getRentals().add(rental);
-        if (holder.getRentals() == null) {
+        if (holder.getRentals() == null)
+        {
             holder.setRentals(new ArrayList<>());
         }
         holder.getRentals().add(rental);
@@ -92,16 +97,16 @@ public class RentalServiceImpl implements RentalService {
 
     @Override
     @Transactional
-    public RentalDTO update(Long id, RentalDTO rentalDTO) {
-
+    public RentalDTO update(Long id, RentalDTO rentalDTO)
+    {
         Rental existingRental = rentalRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Rental not found with id: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Rental not found with id: " + id));
 
         Book book = bookRepository.findById(rentalDTO.getBook().getId())
-                .orElseThrow(() -> new IllegalArgumentException("Book not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Book not found"));
 
         Holder holder = holderRepository.findById(rentalDTO.getHolder().getId())
-                .orElseThrow(() -> new IllegalArgumentException("Holder not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Holder not found"));
 
         existingRental.setBook(book);
         existingRental.setHolder(holder);
