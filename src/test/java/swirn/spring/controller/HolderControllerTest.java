@@ -25,9 +25,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
-import swirn.spring.domain.entity.Book;
+import swirn.spring.controller.view.HolderViewController;
 import swirn.spring.domain.entity.Holder;
-import swirn.spring.repository.BookRepository;
 import swirn.spring.repository.HolderRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -45,7 +44,7 @@ public class HolderControllerTest {
 	    private BindingResult bindingResult;
 	    
 	    @InjectMocks
-	    private HolderController holderController;
+	    private HolderViewController holderController;
 	    
 	    Holder holder;
 
