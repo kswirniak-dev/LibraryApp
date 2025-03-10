@@ -7,5 +7,4 @@ import swirn.spring.domain.entity.Rental;
 
 @Repository
 public interface RentalRepository extends JpaRepository<Rental, Long> {
-
 }
