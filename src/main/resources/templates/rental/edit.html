@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
 </head>
 <body>
-<div th:replace="fragments/topnav :: navbar"></div>
+<div th:replace="~{fragments/topnav :: navbar}"></div>
 <div style="color: red;">
   <p>Rental object present: [[${rental != null}]]</p>
   <p>Rental ID from model: [[${rentalId}]]</p>

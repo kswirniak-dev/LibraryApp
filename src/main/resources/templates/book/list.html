@@ -10,7 +10,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
-<div th:replace="fragments/topnav :: navbar"></div>
+<div th:replace="~{fragments/topnav :: navbar}"></div>
 <div th:switch="${books}">
     <div>
         <div>
