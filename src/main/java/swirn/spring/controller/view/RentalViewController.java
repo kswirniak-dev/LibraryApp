@@ -27,7 +27,6 @@ public class RentalViewController {
 	private final RentalService rentalService;
 	private final BookService bookService;
 	private final HolderService holderService;
-
 	private final BookMapper bookMapper;
 
 	@Autowired

@@ -1,5 +1,6 @@
 package swirn.spring.controller.view;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,13 +42,13 @@ public class BookViewController {
 	}
 	
 	@PostMapping
-	public String add(BookDTO book){
+	public String add(@Valid BookDTO book){
 		bookService.create(book);
 		return "redirect:/books";
 	}
 	
 	@PostMapping("{id}")
-	public String update(BookDTO book, @PathVariable Long id){
+	public String update(@Valid BookDTO book, @PathVariable Long id){
 		bookService.update(id, book);
 		return "redirect:/books";
 	}
