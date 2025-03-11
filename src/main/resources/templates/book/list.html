@@ -11,9 +11,9 @@
 </head>
 <body>
 <div th:replace="fragments/topnav :: navbar"></div>
-<div th:switch="${books}" class="container my-5">
-    <div class="row">
-        <div class="col-md-6">
+<div th:switch="${books}">
+    <div>
+        <div>
             <h2 th:case="null">No books yet!</h2>
             <div th:case="*">
                 <h2 class="my-5">Books</h2>
