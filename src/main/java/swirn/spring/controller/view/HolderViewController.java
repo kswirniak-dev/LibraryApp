@@ -29,7 +29,7 @@ public class HolderViewController {
     }
     
     @PostMapping("add")
-	public String addView(@Valid HolderDTO holder, BindingResult result) {
+	public String addView(HolderDTO holder, BindingResult result) {
 	    if (result.hasErrors()) {
 	        return "holder/add";
 	    }
